@@ -11,7 +11,7 @@ wx.SwitchToThisWindow()  # ListControl()方法用于列出所有子级窗口，�
 # 寻找会话控件绑定
 hw = wx.ListControl(Name='会话')
 # 通过pd读取数据
-df = pd.read_csv('response_data.csv', encoding='utf-8')
+df = pd.read_csv('response_data.txt', encoding='utf-8')
 print(df)
 
 conversations = hw.GetChildren()  # GetChildren()方法，获取会话列表中的所有子控件。
@@ -19,16 +19,14 @@ mark_num = 0
 
 for conversation in conversations:
     contact_name = conversation.Name
-    if contact_name == 'Vincent已置顶':
+    if contact_name == '测试组':
         # 死循环接收消息
         while True:
-            # conversation.Click(simulateMove=False)
             message_list = wx.ListControl(Name='消息').GetChildren()  # 获取消息列表中的所有子控件
             new_msg_num = len(message_list) - mark_num
             if new_msg_num != 0:
                 print(f"有{new_msg_num}条新消息：")
                 for i in range(mark_num, len(message_list)):
-                    print(f"正在回复第{i + 1}条消息")
                     # 处理每一条消息
                     every_msg = message_list[i].Name
                     print(f"收到的消息{every_msg}")
@@ -39,25 +37,14 @@ for conversation in conversations:
                     print(f"匹配到的回复内容：{msg}")
                     msg.dropna(axis=0, how='any', inplace=True)  # 这行代码移除回复内容中的空数据（NaN值）
                     ar = np.array(msg).tolist()  # 这行代码将筛选后的回复内容转换为列表
-                    # 能够匹配到数据时
-                    if ar:
-                        # 将数据输入
-                        # 替换换行符号
-                        num=1
-                        nums=1
-                        if every_msg.find("李大仙") < 0:
-                            while True:  # 循环,获取接龙的序号
-                                if every_msg.find(str(num) + ".") > 0:
-                                    print(f"num = {num}, Index = {num + 1}")
-                                    nums = num + 1
-                                    break
-                                else:
-                                    num -= 1
-                            sendMag = str(every_msg.replace('\n', '{Shift}{Enter}') + '{Shift}{Enter}' +str(nums) + ". " + ar[0]).replace('{br}', '{Shift}{Enter}')
-                            print(f"{sendMag}")
-                            wx.SendKeys(sendMag, waitTime=0)
-                             # 发送消息，回车键
-                            wx.SendKeys('{Enter}', waitTime=0)
+                    if (ar!= [])&(every_msg.find("李大仙") < 0):
+                         nums = len(every_msg.split("."))  # 切割消息内容，获取接龙的序号
+                         print(f"nums = {nums}")
+                         sendMag = str(every_msg.replace('\n', '{Shift}{Enter}') + '{Shift}{Enter}' +str(nums) + ". " + ar[0]).replace('{br}', '{Shift}{Enter}')
+                         print(f"{sendMag}")
+                         wx.SendKeys(sendMag, waitTime=0)
+                   # 发送消息，回车键
+                         wx.SendKeys('{Enter}', waitTime=0)
                 mark_num = len(message_list) + 1
                 print(f"现在一共有{mark_num}条消息")
             else:

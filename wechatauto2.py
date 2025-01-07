@@ -13,7 +13,7 @@ wx.SwitchToThisWindow()  # ListControl()方法用于列出所有子级窗口，�
 # 寻找会话控件绑定
 hw = wx.ListControl(Name='会话')
 # 通过pd读取数据
-df = pd.read_csv('response_data.csv', encoding='utf-8')
+df = pd.read_csv('response_data.txt', encoding='utf-8')
 print(df)
 
 conversations = hw.GetChildren()  # GetChildren()方法，获取会话列表中的所有子控件。
