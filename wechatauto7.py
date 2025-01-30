@@ -11,7 +11,7 @@ wx.SwitchToThisWindow()  # ListControl()方法用于列出所有子级窗口，�
 # 寻找会话控件绑定
 hw = wx.ListControl(Name='会话')
 # 通过pd读取数据
-df = pd.read_csv('../response_data.txt', encoding='utf-8')
+df = pd.read_csv('response_data.txt', encoding='utf-8')
 print(df)
 while True:
     message_list = wx.ListControl(Name='消息').GetChildren()  # 获取消息列表中的所有子控件
@@ -27,7 +27,7 @@ while True:
         print(f"匹配到的回复内容：{msg}")
         msg.dropna(axis=0, how='any', inplace=True)  # 这行代码移除回复内容中的空数据（NaN值）
         ar = np.array(msg).tolist()  # 这行代码将筛选后的回复内容转换为列表
-        if (ar!= [])&(last_msg.find(ar[0]) < 0):
+        if len(ar) > 0 > last_msg.find(ar[0]):
              nums = len(last_msg.split("."))  # 切割消息内容，获取接龙的序号
              print(f"nums = {nums}")
              sendMag = str(last_msg.replace('\n', '{Shift}{Enter}') + '{Shift}{Enter}' +str(nums) + ". " + ar[0]).replace('{br}', '{Shift}{Enter}')
